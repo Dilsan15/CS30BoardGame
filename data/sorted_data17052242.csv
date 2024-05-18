@@ -1,0 +1,4 @@
+neigh_name,total_liv_score,edmonton_rank,alberta_rank,percent_rank,ammenities_grade,cost_of_living_percent,crime_rate,median_income,in_labor_force,unemployment_rate,median_house_val,home_owner_percent,high_school_percent,bach_degree,test_scores,area_pop,pop_dense,med_age,marri_coup,fam_w_kids,eng_only,french_only
+charlesworth,78,75,305,93,15,91,4995,113510,82,6,408143,77,88,32,70,6445,2376,31,76,60,91.1,0.2
+jackson heights,78,85,337,91,15,89,5642,115703,66,7,326765,91,86,25,70,4448,3729,39,81,55,91.3,0.0
+grovenor,78,68,278,94,15,94,5049,104037,74,5,440492,69,87,34,68,2678,2947,40,60,38,89.0,0.0
