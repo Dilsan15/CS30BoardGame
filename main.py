@@ -1,3 +1,4 @@
+import os
 import warnings
 import pandas as pd
 from datetime import datetime
@@ -5,6 +6,7 @@ from datetime import datetime
 grade_map = {'A+': 15, 'A': 14, 'A-': 13, 'B+': 12, 'B': 11, 'B-': 10,
              'C+': 9, 'C': 8, 'C-': 7, 'D+': 6, 'D': 5, 'D-': 4, 'F+': 3, 'F': 2, 'F-': 1}
 
+# Output ----------------------------------------------------------------------
 
 # Function to save the DataFrame to a CSV file with a unique timestamp in the filename
 def save_csv(df):
@@ -17,6 +19,7 @@ def save_csv(df):
     df.to_csv(f"data/sorted_data{dt_string}.csv", index=False)
     print("Data has been saved to a CSV file.")
 
+# Processing -------------------------------------------------------------
 # Binary search function for numerical columns
 def num_binary_search(df, target, col):
     df = df.sort_values(by=col)
@@ -78,6 +81,9 @@ def merge(left, right, col):
 
 
 if __name__ == "__main__":
+
+    # INPUT -------------------------------------------------------------------------------
+
     # Load the neighborhood data from a CSV file into a pandas DataFrame
     raw_neigh_df = pd.read_csv("data/neigh_data_Feb15_2023.csv")
 
@@ -129,8 +135,12 @@ if __name__ == "__main__":
         print(f"{col} ({clean_neigh_df[col].dtype})")
 
     print("\n*Please do not use any sort algo non-quantitative data types*")
+
+
+    # PROCESSING --------------------------------------------------------------------
+
     while True:
-        user_choice = input("Would you like to sort or search the data? (sort/search/exit): ")
+        user_choice = input("Would you like to sort or search the data? (sort/search/print/exit): ")
         input_df = coded_neigh_df.copy()
 
         if user_choice == "sort":
@@ -176,6 +186,80 @@ if __name__ == "__main__":
                     else:
                         found_search_df = found_search_df._append(search_value)
                         input_df.drop(search_value.name, inplace=True)
+
+        elif user_choice == "print":
+            all_files = []
+
+            # Collect all CSV files from the specified directories
+
+            all_files.extend([os.path.join("data", f) for f in os.listdir("data") if f.endswith(".csv")])
+
+            if not all_files:
+                print("No CSV files available for printing. Please choose another option")
+                continue
+
+
+            print("The following CSV files are available for printing:\n")
+            for idx, file in enumerate(all_files, 1):
+                print(str(idx) + "." + file.split('\\')[-1])
+
+            file_index = int(input("Enter the number of the file you wish to print: ")) - 1
+            p_df = pd.read_csv(all_files[file_index])
+
+            print("\n")
+            print(
+                f"{'Neighborhood Name':50}",
+                f"{'Total Living Score':35}",
+                f"{'Edmonton Rank':25}",
+                f"{'Alberta Rank':25}",
+                f"{'Percent Rank':30}",
+                f"{'Amenities Grade':25}",
+                f"{'Cost of Living Percent':35}",
+                f"{'Crime Rate':20}",
+                f"{'Median Income':30}",
+                f"{'In Labor Force':25}",
+                f"{'Unemployment Rate':30}",
+                f"{'Median House Value':30}",
+                f"{'Homeowner Percent':30}",
+                f"{'High School Grad Percent':35}",
+                f"{'Bachelor Degree':25}",
+                f"{'Test Scores':25}",
+                f"{'Area Population':25}",
+                f"{'Population Density':25}",
+                f"{'Median Age':20}",
+                f"{'Married Couples':25}",
+                f"{'Families with Kids':25}",
+                f"{'English Only Speakers':25}",
+                f"{'French Only Speakers':25}"
+            )
+
+            # OUTPUT -----------------------------------------------------------------------------
+            for index, row in p_df.iterrows():
+                print(
+                    f"{row['neigh_name']:30}",
+                    f"{row['total_liv_score']:30}",
+                    f"{row['edmonton_rank']:30}",
+                    f"{row['alberta_rank']:25}",
+                    f"{row['percent_rank']:25}",
+                    f"{row['ammenities_grade']:30}",
+                    f"{row['cost_of_living_percent']:35}",
+                    f"{row['crime_rate']:25}",
+                    f"{row['median_income']:30}",
+                    f"{row['in_labor_force']:25}",
+                    f"{row['unemployment_rate']:30}",
+                    f"{row['median_house_val']:30}",
+                    f"{row['home_owner_percent']:30}",
+                    f"{row['high_school_percent']:35}",
+                    f"{row['bach_degree']:25}",
+                    f"{row['test_scores']:25}",
+                    f"{row['area_pop']:25}",
+                    f"{row['pop_dense']:25}",
+                    f"{row['med_age']:20}",
+                    f"{row['marri_coup']:25}",
+                    f"{row['fam_w_kids']:25}",
+                    f"{row['eng_only']:25}",
+                    f"{row['french_only']:25}"
+                )
 
         elif user_choice == "exit":
             print("\nThank you for using the Edmonton Neighborhoods Data Sorting/Searching Program. Goodbye.")
